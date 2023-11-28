@@ -23,7 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,20 +95,22 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, 5000);
-
-  int counter = 0;
-  char msg[] = "Hello World!\n";
+  Motor_Init(htim2, TIM_CHANNEL_1);
+  char msg[20] = "";
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    counter = __HAL_TIM_GetCounter(&htim2);
-    HAL_UART_Transmit(&huart2, counter, strlen(msg), 100);
-    HAL_Delay(1000);
+    Motor_Speed_Set(25);
+    sprintf(msg,"Speed: %d\n", 25);
+    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
+    HAL_Delay(2999);
+    Motor_Speed_Set(85);
+    sprintf(msg,"Speed: %d\n", 85);
+    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
+    HAL_Delay(2999);
 
     /* USER CODE END WHILE */
 
@@ -147,7 +149,7 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
@@ -176,9 +178,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 7200-1;
+  htim2.Init.Prescaler = 3600-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 10000-1;
+  htim2.Init.Period = 200-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
