@@ -106,11 +106,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    char msg[20] = "";
-    Motor_Speed_Set(8);
-    int num = __HAL_TIM_GetCounter(&htim2);
-    sprintf(msg,"NUM: %d\n", num);
-    HAL_UART_Transmit(&huart2, msg, sizeof(msg), 100);
+      HAL_Delay(500);
+      HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,RESET);
+      HAL_Delay(500);
+      HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,SET);
 
     /* USER CODE END WHILE */
 

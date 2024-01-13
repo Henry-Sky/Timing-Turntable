@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.jetbrains.cidr.lang.workspace.compiler.custom.CustomCompilerService">
+    <option name="definitionsFile" value="C:/Dev/Toolchain/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++.exe" />
+  </component>
+</project>
